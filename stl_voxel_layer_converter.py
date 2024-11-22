@@ -58,7 +58,7 @@ def stl_to_voxel_layer_data(file_name):
 
     # creating voxel grid from our fitted mesh
     voxel_grid = o3d.geometry.VoxelGrid.create_from_triangle_mesh(mesh, voxel_size=1)
-    o3d.visualization.draw_geometries([voxel_grid], width=1500, height=1500)
+    # o3d.visualization.draw_geometries([voxel_grid], width=1500, height=1500)
 
     # finding total number of voxels in voxel grid
     total_voxels = len(voxel_grid.get_voxels())
@@ -106,7 +106,7 @@ def stl_to_voxel_layer_data(file_name):
 
     return layer_data
 
-layer_data = stl_to_voxel_layer_data('3DBenchy.stl')
+# layer_data = stl_to_voxel_layer_data('3DBenchy.stl')
 
 
 
