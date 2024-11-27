@@ -1,15 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import random
 from matplotlib.colors import ListedColormap
-import copy
+import random
+import math
 
-# Define blocks with sizes prioritized from large to small, and their respective limits
-blocks = [
-    ((4, 8), 1),
-    ((4, 6), 2),
-    ((4, 4), 3)
-]
 
 # Function to read the grid from a text file
 def read_grid_from_data(layer_data):
@@ -17,40 +11,6 @@ def read_grid_from_data(layer_data):
     for data in layer_data:
         grids.append(data)
     return grids
-
-# Function to rotate block dimensions (if required)
-def rotate_block(block_size):
-    rows, cols = block_size
-    return (cols, rows)
-
-def can_place_block(grid, top_left, block_size, rotated=False):
-    rows, cols = block_size
-    if rotated:
-        rows, cols = rotate_block((rows, cols))
-    
-    i, j = top_left
-    # Check if block fits within the grid boundaries
-    if i + rows > len(grid) or j + cols > len(grid[0]):
-        # print(f"Block {block_size} (rotated={rotated}) does not fit at {top_left}")
-        return False
-    
-    # Check if all cells under the block are `1`
-    valid = all(grid[i + x][j + y] == 1 for x in range(rows) for y in range(cols))
-    # if not valid:
-    #     print(f"Block {block_size} (rotated={rotated}) cannot be placed at {top_left}")
-    return valid
-
-
-def place_block(grid, top_left, block_size, block_id, rotated=False):
-    rows, cols = block_size
-    if rotated:
-        rows, cols = rotate_block((rows, cols))
-
-    i, j = top_left
-    for x in range(rows):
-        for y in range(cols):
-            grid[i + x][j + y] = block_id
-
 
 def draw_grid(grid, ax):
     ax.clear()
@@ -102,62 +62,162 @@ def draw_block_borders(ax, grid):
                              edgecolor='black', linewidth=2, fill=False)
         ax.add_patch(rect)
 
+class Node:
+    def __init__(self, state, parent=None, action=None):
+        self.state = state  # The grid and current block ID
+        self.parent = parent
+        self.action = action
+        self.children = []
+        self.visits = 0
+        self.value = 0
 
-def find_best_combination(grid):
-    fig, ax = plt.subplots(figsize=(8, 8))
-    # Cache to store the best grid configurations
-    best_grid = None
+    def is_fully_expanded(self):
+        return len(self.children) == len(self.get_legal_actions())
+    
+    def get_legal_actions(self):
+        grid, block_id = self.state
+        rows, cols = len(grid), len(grid[0])
+
+        # Define block sizes in descending priority
+        prioritized_blocks = [
+            ((2, 4), 8),  # Block size 2x4
+            ((2, 3), 8),  # Block size 2x3
+            ((2, 2), 8)   # Block size 2x2
+        ]
+
+        valid_actions = []
+
+        # Iterate over each block size in priority order
+        for block, _ in prioritized_blocks:
+            for orientation in [(block[0], block[1]), (block[1], block[0])]:  # Horizontal and vertical
+                for i in range(rows - orientation[0] + 1):
+                    for j in range(cols - orientation[1] + 1):
+                        # Check if the block can fit at this position
+                        can_place = True
+                        for x in range(orientation[0]):
+                            for y in range(orientation[1]):
+                                if grid[i + x][j + y] != 1:  # Check if the cell is not empty
+                                    can_place = False
+                                    break
+                            if not can_place:
+                                break
+                        if can_place:
+                            # Add valid placement action (top-left corner and block details)
+                            valid_actions.append((i, j, orientation, block))
+
+        # Return all valid actions
+        return valid_actions
+
+
+
+    def add_child(self, action):
+        new_state = self.perform_action(self.state, action)
+        child = Node(new_state, parent=self, action=action)
+        self.children.append(child)
+        return child
+
+    def perform_action(self, state, action):
+        grid, block_id = state
+        i, j, (rows, cols), block = action
+
+        # Create a new grid to reflect the updated state
+        new_grid = [row[:] for row in grid]  # Deep copy of the grid
+
+        # Apply the block to the new grid
+        for x in range(rows):
+            for y in range(cols):
+                new_grid[i + x][j + y] = block_id  # Mark the cells with the block ID
+
+        # print(f"Placed block {block} at ({i}, {j}) with orientation ({rows}x{cols}).")
+        return new_grid, block_id + 1
+
+
+def mcts(grid, iterations=1000):
+    root = Node((grid, 2))
+    best_grid = grid
     max_coverage = 0
-    block_coverage = {tuple(size): 0 for size, _ in blocks}
 
-    def backtrack(current_grid, block_id, current_coverage, coverage_tracker):
-        nonlocal best_grid, max_coverage
+    for _ in range(iterations):
+        node = root
+        # Selection: Traverse tree to find the best leaf node
+        while node.is_fully_expanded() and node.children:
+            node = select_best_child(node)
 
-        # Update the best grid if this arrangement has the most coverage
-        if current_coverage > max_coverage:
-            max_coverage = current_coverage
-            best_grid = [row[:] for row in current_grid]
+        # Expansion: Expand the leaf node if it is not fully expanded
+        if not node.is_fully_expanded():
+            legal_actions = node.get_legal_actions()
+            untried_actions = [action for action in legal_actions if action not in [child.action for child in node.children]]
+            if untried_actions:
+                action = random.choice(untried_actions)
+                node = node.add_child(action)
 
-        # Try placing every block at every position
-        for i in range(len(current_grid)):
-            for j in range(len(current_grid[0])):
-                if current_grid[i][j] != 1:
-                    continue
+        # Simulation: Run a random simulation from the current state
+        coverage, simulated_grid = simulate(node.state)
+        if coverage > max_coverage:
+            max_coverage = coverage
+            best_grid = simulated_grid
 
-                # Sort blocks in descending order of area (larger blocks first)
-                for block_size, limit in sorted(blocks, key=lambda x: -(x[0][0] * x[0][1])):
-                    if coverage_tracker[tuple(block_size)] >= limit:
-                        continue  # Skip if the block limit is reached
-                    
-                    for rotated in [False, True]:
-                        if can_place_block(current_grid, (i, j), block_size, rotated):
-                            grid_copy = copy.deepcopy(current_grid)
-                            rows, cols = block_size if not rotated else (block_size[1], block_size[0])
-                            new_coverage = current_coverage + rows * cols
-                            coverage_tracker[tuple(block_size)] += 1
+        # Backpropagation: Update values up the tree
+        backpropagate(node, coverage)
 
-                            place_block(current_grid, (i, j), block_size, block_id, rotated)
-
-                            # Recurse
-                            backtrack(current_grid, block_id + 1, new_coverage, coverage_tracker)
-
-                            # Undo changes
-                            current_grid = grid_copy
-                            coverage_tracker[tuple(block_size)] -= 1
-
-    # Initialize backtracking
-    backtrack(grid, block_id=2, current_coverage=0, coverage_tracker=block_coverage)
-
-    # If no blocks could be placed, best_grid will be None
-    if best_grid is None:
-        print("No blocks could be placed. Drawing the original grid.")
-        best_grid = grid  # Use the original grid
-
-    # Draw the resulting grid (original or with blocks placed)
-    draw_grid(best_grid, ax)
-    plt.show()
     return best_grid
 
+
+def select_best_child(node, exploration_weight=1.0):
+    def ucb_score(child):
+        exploitation = child.value / (child.visits + 1e-6)
+        exploration = math.sqrt(math.log(node.visits + 1) / (child.visits + 1e-6))
+        return exploitation + exploration_weight * exploration
+
+    return max(node.children, key=ucb_score)
+
+
+def simulate(state):
+    grid, block_id = state
+    current_grid = [row[:] for row in grid]
+    coverage = 0
+
+    # Simulate full block placement with prioritized blocks
+    prioritized_blocks = [
+        ((2, 4), 8),  # Block size 2x4
+        ((2, 3), 8),  # Block size 2x3
+        ((2, 2), 8)   # Block size 2x2
+    ]
+
+    while True:
+        legal_actions = []
+        for block, _ in prioritized_blocks:
+            legal_actions = Node((current_grid, block_id)).get_legal_actions()
+            if legal_actions:
+                break
+
+        if not legal_actions:
+            break
+
+        # Select the first valid action for the largest block
+        action = legal_actions[0]
+        i, j, (rows, cols), _ = action
+        for x in range(rows):
+            for y in range(cols):
+                current_grid[i + x][j + y] = block_id
+        block_id += 1
+        coverage += rows * cols
+
+    return coverage, current_grid
+
+
+def backpropagate(node, result):
+    while node:
+        node.visits += 1
+        node.value += result
+        node = node.parent
+
+
+# Visualization and grid solving
+def find_best_combination_with_mcts(grid):
+    print("Running MCTS...")
+    best_grid = mcts(grid, iterations=2000)  # Increase iterations as needed
+    return best_grid
 
 
 def get_block_centers(grid):
@@ -181,8 +241,8 @@ def get_block_centers(grid):
         width = right - left + 1
         
         # Special cases
-        if (height == 4 and width == 6) or (height == 6 and width == 4):
-            # Center of the left 2x2 portion
+        if (height == 2 and width == 3) or (height == 3 and width == 2):
+            # Center of the right 2x2 portion
             center_row = (top + top + 1) / 2
             center_col = (right + right + 1) / 2
         else:
@@ -194,3 +254,38 @@ def get_block_centers(grid):
     
     return centers
 
+
+def extract_final_block_info(grid):
+    block_positions = {}
+
+    # Collect block boundaries
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            block_id = grid[i][j]
+            if block_id > 1:  # Only consider placed blocks
+                if block_id not in block_positions:
+                    block_positions[block_id] = [i, j, i, j]
+                else:
+                    block_positions[block_id][2] = max(block_positions[block_id][2], i)
+                    block_positions[block_id][3] = max(block_positions[block_id][3], j)
+
+    # Generate block information
+    block_info = []
+    for block_id, (top, left, bottom, right) in block_positions.items():
+        height = bottom - top + 1
+        width = right - left + 1
+
+        # Determine block type and orientation
+        if (height, width) in [(2, 2), (2, 3), (2, 4)]:
+            block_type = [(2, 2), (2, 3), (2, 4)].index((height, width))
+            orientation = 0  # Horizontal
+        elif (width, height) in [(2, 2), (2, 3), (2, 4)]:
+            block_type = [(2, 2), (2, 3), (2, 4)].index((width, height))
+            orientation = 1  # Vertical
+        else:
+            continue  # Skip invalid blocks
+
+        block_info.append(
+            [block_type, orientation]
+        )
+    return block_info
