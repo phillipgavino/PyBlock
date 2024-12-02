@@ -26,9 +26,9 @@ def stl_to_voxel_layer_data(file_name):
     bounding_box_dimensions = bounding_box_max - bounding_box_min
 
     # We want the model to fit inside the build volume, which has a 
-    # volume of 18x18x7 (17x17x6 in terms of indexes)
+    # volume of 18x13x7 (17x12x6 in terms of indexes)
     x_extent = 18
-    y_extent = 18
+    y_extent = 13
     z_extent = 7
     # subtracting one since it will scale such that it will be from 0 to 
     # the target dimension (if we want z to go from 0 to 6 then
@@ -94,8 +94,8 @@ def stl_to_voxel_layer_data(file_name):
     def make_dense(layer_data):
 
         for z_coor in range(len(layer_data)):
-            for x_coor in range(len(layer_data[0])):
-                for y_coor in range(len(layer_data[0][0])):
+            for y_coor in range(len(layer_data[0])):
+                for x_coor in range(len(layer_data[0][0])):
                     if not layer_data[z_coor][y_coor][x_coor]:
                         if sum([ layer_data[z][y_coor][x_coor] for z in range(0,z_coor) ]) and sum([ layer_data[z][y_coor][x_coor] for z in range(z_coor,len(layer_data)) ]):
                             layer_data[z_coor][y_coor][x_coor] = 1
