@@ -54,3 +54,6 @@ def gcode(filename, points):
 # pointstest = np.array([p1,p2,p3])
 
 # gcode("test1.gcode", pointstest)
+
+
+#this line is for testin gpurposes only
