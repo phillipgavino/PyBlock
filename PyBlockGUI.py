@@ -217,7 +217,6 @@ def pyblock_instuction_GUI(brick_data):
                 self.progress_bar.setValue(self.brick_index + 1)
                 self.brick_index_label.setText('Brick ' + str(self.brick_index + 1) + ' / ' + str(total_bricks))
                 self.change_brick_images(self.brick_index)
-            print(self.brick_index)
 
         def next_button_was_clicked(self):
             # show_next_brick_function
@@ -226,7 +225,6 @@ def pyblock_instuction_GUI(brick_data):
                 self.progress_bar.setValue(self.brick_index + 1)
                 self.brick_index_label.setText('Brick ' + str(self.brick_index + 1) + ' / ' + str(total_bricks))
                 self.change_brick_images(self.brick_index)
-            print(self.brick_index)
 
     app = QApplication([])
     main_window = MyMainWindow()
