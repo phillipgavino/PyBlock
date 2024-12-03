@@ -77,6 +77,7 @@ def gcode(filename, points):
             block = block + "G1 E0 ;release gripper\n"
             block = block + "G4 P500 ;pause\n"
             block = block + "G1 Z"+str(z + zTravel)+" ;raise empty gripper up to travel height\n"
+            block = block + "G4 P5000; long pause before next block pickup\n"
             file.write(block)
 
         footer = " \n"
