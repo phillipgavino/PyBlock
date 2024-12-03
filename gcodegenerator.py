@@ -52,8 +52,17 @@ def gcode(filename, points):
 # p2 = np.array([4.5, 4.5, 0])
 # p3 = np.array([0.5, 0.5, 1])
 # pointstest = np.array([p1,p2,p3])
-
 # gcode("test1.gcode", pointstest)
+
+# Example for stacking six blocks on top of eachother in the front left corner
+# p1 = np.array([0.5, 0.5, 0])
+# p2 = np.array([0.5, 0.5, 1])
+# p3 = np.array([0.5, 0.5, 2])
+# p4 = np.array([0.5, 0.5, 3])
+# p5 = np.array([0.5, 0.5, 4])
+# p6 = np.array([0.5, 0.5, 5])
+# pointstest = np.array([p1,p2,p3,p4,p5,p6])
+# gcode("test2.gcode", pointstest)
 
 
 #this line is for testin gpurposes only
