@@ -12,6 +12,10 @@ def read_grid_from_data(layer_data):
         grids.append(data)
     return grids
 
+def print_grid(grid):
+    for row in grid:
+        print(" ".join(map(str, row)))
+
 def draw_grid(grid, ax):
     ax.clear()
 
@@ -107,8 +111,6 @@ class Node:
 
         # Return all valid actions
         return valid_actions
-
-
 
     def add_child(self, action):
         new_state = self.perform_action(self.state, action)
@@ -222,37 +224,34 @@ def find_best_combination_with_mcts(grid):
 
 def get_block_centers(grid, z):
     block_positions = {}
-    
+
     # Collect block boundaries
     for i in range(len(grid)):
         for j in range(len(grid[0])):
             block_id = grid[i][j]
             if block_id > 1:  # Only consider blocks
                 if block_id not in block_positions:
-                    block_positions[block_id] = [i, j, i, j]
+                    block_positions[block_id] = [i, j, i, j]  # top, left, bottom, right
                 else:
-                    block_positions[block_id][2] = max(block_positions[block_id][2], i)
-                    block_positions[block_id][3] = max(block_positions[block_id][3], j)
-    
+                    block_positions[block_id][2] = max(block_positions[block_id][2], i)  # Update bottom
+                    block_positions[block_id][3] = max(block_positions[block_id][3], j)  # Update right
+
     # Calculate block centers
     centers = []
     for block_id, (top, left, bottom, right) in block_positions.items():
         height = bottom - top + 1
         width = right - left + 1
         
-        # Special cases
-        if (height == 2 and width == 3) or (height == 3 and width == 2):
-            # Center of the right 2x2 portion
-            y = (top + top + 1) / 2
-            x = (right + right + 1) / 2
-        else:
-            # Default: Center of the whole block
+        if (height == 3 and width == 2) or (height == 2 and width == 2):  # Right 2x2 portion for 3x2 block
+            y = bottom - 0.5
+            x = right - 0.5
+        else:  # Default: Center of the whole block
             y = (top + bottom) / 2
             x = (left + right) / 2
         
         centers.append([x, y, z])
 
-    return (centers)
+    return centers
 
 def extract_final_block_info(grid):
     block_positions = {}
