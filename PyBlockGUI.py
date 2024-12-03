@@ -231,6 +231,3 @@ def pyblock_instuction_GUI(brick_data):
     main_window.show()
     app.exec()
 
-brick_data = [[0],[1,0],[2,1],[2,0],[0],[1,1]]
-
-pyblock_instuction_GUI(brick_data)
