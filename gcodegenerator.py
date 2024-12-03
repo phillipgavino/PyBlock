@@ -2,8 +2,43 @@
 import numpy as np
 
 def gcode(filename, points):
+    #filename is the name of the gcode file that will be output. must end in .gocode. example "benchy.gcode"
+    # points is a numpy array of numpy arrays, or a list of lists in the same format: [[x,y,z],[x,y,z],[x,y,z]] corresponding to grab locations for each block in integer numbers of pegs from 0,0
+    # origin (0,0) is the bottom left peg on the platform (near where printer zeroes itself.)
+    
+    if not filename.endswith(".gcode"): #add .gcode to the filename if it was omitted
+        filename = filename + ".gcode"
+        
+    # sort the points, handles both numpy arrays and lists of lists
+    if isinstance(points, list):
+        sortedpoints = sorted(points, key = lambda val: val[2])  #sort the incoming points by z height
+    elif isinstance(points, np.ndarray): 
+        sortedpoints = points[points[:, 2].argsort()]  #sort the incoming points by z height
+    else:
+        print("\n YOU'RE STUPID, THIS INPUT IS INVALID. USE A LIST OF LISTS OR A NUMPY ARARY OF NUMPY ARRAYS\n[[x,y,z],[x,y,z],[x,y,z]]\n")
+        return
+    # print(sortedpoints)
 
-    sortedpoints = points[points[:, 2].argsort()]  #sort the incoming points by z height
+    for p in sortedpoints:
+        err1 = False
+        err2 = False
+        if not p[0]%1 == 0.5:
+            err1 = True
+        if not p[1]%1 == 0.5:
+            err1 = True
+        if not p[2]%1 == 0:
+            err2 = True
+        if err1:
+            print("\nINVALID PLACEMENT POINT IN INPUT. X AND Y MUST END IN 0.5 DUMBASS\n")
+            return
+        if err2:
+            print("\nINVALID Z VALUE IN INPUT. MUST BE INTEGERS IDIOT.\n")
+            return
+    
+    if not sortedpoints[0][2] == 0:
+        print("\nFUCK, EMPTY FIRST LAYER. MUST HAVE AT LEAST ONE Z VALUE OF 0\n")
+        return
+
 
     xOffset = 34.5   #mm offsets from point where printer zeroes against its limit switches to pickup point of the blocks
     yOffset = 224
@@ -28,8 +63,6 @@ def gcode(filename, points):
         file.write(header)
 
         for p in sortedpoints:
-            # x = xOffset - 1*25.4 + (p[0]*25.4)
-            # y = yOffset - 7.5*25.4 + (p[1]*25.4) #that extra offset acccounts for putting origin at bottom left corner, peg 0 0
             x = xOffset - 1.5*12.7 + (p[0]*12.7)
             y = yOffset - 14.5*12.7 + (p[0]*12.7)
             z = zOffset + (p[2]*25.4)
@@ -44,6 +77,7 @@ def gcode(filename, points):
             block = block + "G1 E0 ;release gripper\n"
             block = block + "G4 P500 ;pause\n"
             block = block + "G1 Z"+str(z + zTravel)+" ;raise empty gripper up to travel height\n"
+            block = block + "G4 P5000; long pause before next block pickup\n"
             file.write(block)
 
         footer = " \n"
@@ -67,5 +101,9 @@ def gcode(filename, points):
 # pointstest = np.array([p1,p2,p3,p4,p5,p6])
 # gcode("test2.gcode", pointstest)
 
-
-#this line is for testin gpurposes only
+#Example that uses lists of lists instead of numpy arrays
+# p1 = [0.5, 0.5, 0]
+# p2 = [0.5, 0.5, 2]
+# p3 = [0.5, 0.5, 1]
+# pointstest = [p1, p2, p3]
+# gcode("test3.gcode", pointstest)
