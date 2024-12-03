@@ -106,5 +106,3 @@ def stl_to_voxel_layer_data(file_name):
     layer_data = make_dense(layer_data)
 
     return layer_data
-
-layer_data = stl_to_voxel_layer_data('3DBenchy.stl')
