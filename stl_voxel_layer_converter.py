@@ -12,6 +12,7 @@ def stl_to_voxel_layer_data(file_name):
 
     # Reading stl model and visualizing it
     mesh = o3d.io.read_triangle_mesh(file_path)
+    o3d.visualization.draw_geometries([mesh], width=1500, height=1500)
 
     # Getting the bounding box that aligns with the axes (x,y,z)
     bounding_box = mesh.get_axis_aligned_bounding_box()
@@ -107,6 +108,3 @@ def stl_to_voxel_layer_data(file_name):
     return layer_data
 
 layer_data = stl_to_voxel_layer_data('3DBenchy.stl')
-
-
-
