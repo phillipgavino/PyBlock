@@ -2,6 +2,9 @@
 import numpy as np
 
 def gcode(filename, points):
+
+    sortedpoints = points[points[:, 2].argsort()]  #sort the incoming points by z height
+
     xOffset = 34.5   #mm offsets from point where printer zeroes against its limit switches to pickup point of the blocks
     yOffset = 224
     zOffset = 16.5 #height the effector should be when it grabs the block
@@ -24,7 +27,7 @@ def gcode(filename, points):
     with open(filename, "w") as file:
         file.write(header)
 
-        for p in points:
+        for p in sortedpoints:
             # x = xOffset - 1*25.4 + (p[0]*25.4)
             # y = yOffset - 7.5*25.4 + (p[1]*25.4) #that extra offset acccounts for putting origin at bottom left corner, peg 0 0
             x = xOffset - 1.5*12.7 + (p[0]*12.7)
