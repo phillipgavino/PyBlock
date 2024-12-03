@@ -220,7 +220,7 @@ def find_best_combination_with_mcts(grid):
     return best_grid
 
 
-def get_block_centers(grid):
+def get_block_centers(grid, z):
     block_positions = {}
     
     # Collect block boundaries
@@ -243,17 +243,16 @@ def get_block_centers(grid):
         # Special cases
         if (height == 2 and width == 3) or (height == 3 and width == 2):
             # Center of the right 2x2 portion
-            center_row = (top + top + 1) / 2
-            center_col = (right + right + 1) / 2
+            y = (top + top + 1) / 2
+            x = (right + right + 1) / 2
         else:
             # Default: Center of the whole block
-            center_row = (top + bottom) / 2
-            center_col = (left + right) / 2
+            y = (top + bottom) / 2
+            x = (left + right) / 2
         
-        centers.append((center_col, center_row))
+        centers.append([x, y, z])
     
     return centers
-
 
 def extract_final_block_info(grid):
     block_positions = {}
@@ -275,17 +274,15 @@ def extract_final_block_info(grid):
         height = bottom - top + 1
         width = right - left + 1
 
-        # Determine block type and orientation
-        if (height, width) in [(2, 2), (2, 3), (2, 4)]:
-            block_type = [(2, 2), (2, 3), (2, 4)].index((height, width))
-            orientation = 0  # Horizontal
-        elif (width, height) in [(2, 2), (2, 3), (2, 4)]:
-            block_type = [(2, 2), (2, 3), (2, 4)].index((width, height))
-            orientation = 1  # Vertical
-        else:
-            continue  # Skip invalid blocks
-
-        block_info.append(
-            [block_type, orientation]
-        )
+        match (height, width):
+            case (2, 2):
+                block_info.append([0])
+            case (2, 3):
+                block_info.append([1, 0])
+            case (2, 4):
+                block_info.append([2, 0])
+            case (3, 2):
+                block_info.append([1, 1])
+            case (4, 2):
+                block_info.append([2, 1])
     return block_info
