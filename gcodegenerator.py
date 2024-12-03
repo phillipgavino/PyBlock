@@ -5,8 +5,6 @@ def gcode(filename, points):
     #filename is the name of the gcode file that will be output. must end in .gocode. example "benchy.gcode"
     # points is a numpy array of numpy arrays, or a list of lists in the same format: [[x,y,z],[x,y,z],[x,y,z]] corresponding to grab locations for each block in integer numbers of pegs from 0,0
     # origin (0,0) is the bottom left peg on the platform (near where printer zeroes itself.)
-
-    err = False #change to true if something is invalid in the input
     
     if not filename.endswith(".gcode"): #add .gcode to the filename if it was omitted
         filename = filename + ".gcode"
@@ -108,5 +106,3 @@ def gcode(filename, points):
 # p3 = [0.5, 0.5, 1]
 # pointstest = [p1, p2, p3]
 # gcode("test3.gcode", pointstest)
-
-#this line is for testin gpurposes only
