@@ -216,7 +216,7 @@ def backpropagate(node, result):
 # Visualization and grid solving
 def find_best_combination_with_mcts(grid):
     print("Running MCTS...")
-    best_grid = mcts(grid, iterations=2000)  # Increase iterations as needed
+    best_grid = mcts(grid, iterations=1000)  # Increase iterations as needed
     return best_grid
 
 
@@ -251,8 +251,8 @@ def get_block_centers(grid, z):
             x = (left + right) / 2
         
         centers.append([x, y, z])
-    
-    return centers
+
+    return (centers)
 
 def extract_final_block_info(grid):
     block_positions = {}
