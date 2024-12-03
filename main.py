@@ -4,8 +4,6 @@ from stl_voxel_layer_converter import *
 if __name__ == "__main__":
 
     layer_data = stl_to_voxel_layer_data("stl/Simple_Model_House.stl")
-
-    # print(len(layer_data))
     
     for z, data in enumerate(layer_data):
         fig, ax = plt.subplots(figsize=(8, 8))
