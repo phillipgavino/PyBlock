@@ -43,7 +43,7 @@ def gcode(filename, points):
     xOffset = 34.5   #mm offsets from point where printer zeroes against its limit switches to pickup point of the blocks
     yOffset = 224
     zOffset = 16.5 #height the effector should be when it grabs the block
-    zTravel = 30 #extra z clearance to raise the block up when traveling around
+    zTravel = 50 #extra z clearance to raise the block up when traveling around
 
     header = "M82 ;absolute extrusion mode\n"
     header = header + "M201 X500.00 Y500.00 Z100.00 E5000.00 ;Setup machine max acceleration\n"
