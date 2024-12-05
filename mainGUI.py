@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     # pyblock_instuction_GUI(brick_data)
 
-    layer_data = stl_to_voxel_layer_data('3DBenchy.stl')
+    layer_data = stl_to_voxel_layer_data('Couch2seat.stl')
 
     for layer in layer_data:
         for row in layer:
