@@ -2,7 +2,7 @@ import open3d as o3d
 import numpy as np
 from os import path
 
-def stl_to_voxel_layer_data(file_name):
+def stl_to_voxel_layer_data(file_name, adjustment_factor = 1):
 
     # Get the directory of the current script
     script_dir = path.dirname(path.abspath(__file__))
@@ -45,7 +45,7 @@ def stl_to_voxel_layer_data(file_name):
     # scale factor necessary to scale the mesh uniformally to either
     # be 18 units wide in the x direction, 18 units wide in the y 
     # direction, or 7 units tall in the z direction
-    uniform_scale_factor = min(scale_factors)
+    uniform_scale_factor = min(scale_factors) * adjustment_factor
     mesh.scale(uniform_scale_factor, center= mesh.get_center())
 
     # with our mesh scaled to fit in 18x18x7 volume, we can verify 
