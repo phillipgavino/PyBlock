@@ -30,7 +30,7 @@ def stl_to_voxel_layer_data(file_name, adjustment_factor = 1):
     # volume of 18x13x7 (17x12x6 in terms of indexes)
     x_extent = 18
     y_extent = 13
-    z_extent = 7
+    z_extent = 14
     # subtracting one since it will scale such that it will be from 0 to 
     # the target dimension (if we want z to go from 0 to 6 then
     # we need to scale the models height to 6 units tall)
@@ -103,9 +103,12 @@ def stl_to_voxel_layer_data(file_name, adjustment_factor = 1):
                         # if we want to fill in all spots below other voxels
                         if sum([ layer_data[z][y_coor][x_coor] for z in range(z_coor,len(layer_data)) ]):
                             layer_data[z_coor][y_coor][x_coor] = 1
-        
+
         return layer_data
     
     layer_data = make_dense(layer_data)
 
-    return layer_data
+    # removing every other layer to bring it back to a height of 7
+    adjusted_layer_data = layer_data[::2]
+
+    return adjusted_layer_data
