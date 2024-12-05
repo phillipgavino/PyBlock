@@ -98,7 +98,10 @@ def stl_to_voxel_layer_data(file_name):
             for y_coor in range(len(layer_data[0])):
                 for x_coor in range(len(layer_data[0][0])):
                     if not layer_data[z_coor][y_coor][x_coor]:
-                        if sum([ layer_data[z][y_coor][x_coor] for z in range(0,z_coor) ]) and sum([ layer_data[z][y_coor][x_coor] for z in range(z_coor,len(layer_data)) ]):
+                        # if we only want to fill in the gaps
+                        # if sum([ layer_data[z][y_coor][x_coor] for z in range(0,z_coor) ]) and sum([ layer_data[z][y_coor][x_coor] for z in range(z_coor,len(layer_data)) ]):
+                        # if we want to fill in all spots below other voxels
+                        if sum([ layer_data[z][y_coor][x_coor] for z in range(z_coor,len(layer_data)) ]):
                             layer_data[z_coor][y_coor][x_coor] = 1
         
         return layer_data
@@ -106,5 +109,3 @@ def stl_to_voxel_layer_data(file_name):
     layer_data = make_dense(layer_data)
 
     return layer_data
-
-# layer_data = stl_to_voxel_layer_data('3DBenchy.stl')
