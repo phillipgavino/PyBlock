@@ -9,7 +9,8 @@ import math
 def read_grid_from_data(layer_data):
     grids = []
     for data in layer_data:
-        grids.append(data)
+        ref_data = np.flip(np.array(data), axis=0)
+        grids.append(ref_data)
     return grids
 
 def print_grid(grid):
@@ -83,10 +84,15 @@ class Node:
         rows, cols = len(grid), len(grid[0])
 
         # Define block sizes in descending priority
+        # prioritized_blocks = [
+        #     ((2, 4), 8),  # Block size 2x4
+        #     ((2, 3), 8),  # Block size 2x3
+        #     ((2, 2), 8)   # Block size 2x2
+        # ]
+
         prioritized_blocks = [
-            ((2, 4), 8),  # Block size 2x4
-            ((2, 3), 8),  # Block size 2x3
-            ((2, 2), 8)   # Block size 2x2
+        ((2, 4), 8),  # Block size 2x4
+        ((2, 2), 8)   # Block size 2x2
         ]
 
         valid_actions = []
@@ -180,9 +186,14 @@ def simulate(state):
     coverage = 0
 
     # Simulate full block placement with prioritized blocks
+    # prioritized_blocks = [
+    #     ((2, 4), 8),  # Block size 2x4
+    #     ((2, 3), 8),  # Block size 2x3
+    #     ((2, 2), 8)   # Block size 2x2
+    # ]
+
     prioritized_blocks = [
         ((2, 4), 8),  # Block size 2x4
-        ((2, 3), 8),  # Block size 2x3
         ((2, 2), 8)   # Block size 2x2
     ]
 
@@ -242,9 +253,9 @@ def get_block_centers(grid, z):
         height = bottom - top + 1
         width = right - left + 1
         
-        if (height == 3 and width == 2) or (height == 2 and width == 2):  # Right 2x2 portion for 3x2 block
+        if (height == 2 and width == 3) or (height == 3 and width == 2):  # Bottom 2x2 portion for 2x3 block
             y = bottom - 0.5
-            x = right - 0.5
+            x = right - 1.5
         else:  # Default: Center of the whole block
             y = (top + bottom) / 2
             x = (left + right) / 2
