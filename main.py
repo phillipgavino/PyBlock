@@ -34,6 +34,6 @@ if __name__ == "__main__":
     # plt.show()
 
     # Generate G-code and GUI instructions
-    gcode("gcode/3DBenchy_gcode_3.gcode", centers_flat)
+    gcode("gcode/3DBenchy_gcode_4.gcode", centers_flat)
     pyblock_instuction_GUI(info_flat)
         
