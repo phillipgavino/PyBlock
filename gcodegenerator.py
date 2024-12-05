@@ -40,8 +40,8 @@ def gcode(filename, points):
         return
 
 
-    xOffset = 34.5   #mm offsets from point where printer zeroes against its limit switches to pickup point of the blocks
-    yOffset = 224
+    xOffset = 35   #mm offsets from point where printer zeroes against its limit switches to pickup point of the blocks
+    yOffset = 225
     zOffset = 16.5 #height the effector should be when it grabs the block
     zTravel = 50 #extra z clearance to raise the block up when traveling around
 
