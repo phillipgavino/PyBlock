@@ -67,7 +67,7 @@ def gcode(filename, points):
             y = yOffset - 14.5*12.7 + (p[1]*12.7)
             z = zOffset + (p[2]*25.4)
             block = " \n"
-            block = block + "G1 X"+str(xOffset)+" Y"+str(yOffset) +" Z"+str(zOffset+zTravel)+" ;go high above block pickup point\n"
+            block = block + "G1 X"+str(xOffset)+" Y"+str(yOffset) +" Z"+str(z+zTravel)+" ;go high above block pickup point\n"
             block = block + "G1 Z"+str(zOffset)+" ; descend to block pickup point height\n"
             block = block + "G1 E4 ;lock in gripper\n"
             block = block + "G4 P500 ;pause\n"
