@@ -30,7 +30,7 @@ def pyblock_instuction_GUI(brick_data):
     script_dir = path.dirname(path.abspath(__file__))
     print(script_dir)
 
-    # Construct the full paths to the image files
+    # Construct the full paths to the image files in the image folder
     two_by_two_file_path = path.join(script_dir + '/image_folder','2x2.png')
     two_by_three_file_path = path.join(script_dir + '/image_folder','2x3.png')
     three_by_two_file_path = path.join(script_dir + '/image_folder','3x2.png')
@@ -45,6 +45,7 @@ def pyblock_instuction_GUI(brick_data):
     lego_logo_file_path = path.join(script_dir + '/image_folder','PyBlockLogo.png')
     print(lego_logo_file_path)
 
+    # setting 
     class MyMainWindow(QMainWindow):
         
         def __init__(self):
