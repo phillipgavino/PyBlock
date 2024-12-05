@@ -15,7 +15,7 @@ def gcode(filename, points):
     elif isinstance(points, np.ndarray): 
         sortedpoints = points[points[:, 2].argsort()]  #sort the incoming points by z height
     else:
-        print("\n YOU'RE STUPID, THIS INPUT IS INVALID. USE A LIST OF LISTS OR A NUMPY ARARY OF NUMPY ARRAYS\n[[x,y,z],[x,y,z],[x,y,z]]\n")
+        print("\nTHIS INPUT IS INVALID. USE A LIST OF LISTS OR A NUMPY ARARY OF NUMPY ARRAYS\n[[x,y,z],[x,y,z],[x,y,z]]\n")
         return
     # print(sortedpoints)
 
@@ -29,14 +29,14 @@ def gcode(filename, points):
         if not p[2]%1 == 0:
             err2 = True
         if err1:
-            print("\nINVALID PLACEMENT POINT IN INPUT. X AND Y MUST END IN 0.5 DUMBASS\n")
+            print("\nINVALID PLACEMENT POINT IN INPUT. X AND Y MUST END IN 0.5\n")
             return
         if err2:
-            print("\nINVALID Z VALUE IN INPUT. MUST BE INTEGERS IDIOT.\n")
+            print("\nINVALID Z VALUE IN INPUT. MUST BE INTEGERS.\n")
             return
     
     if not sortedpoints[0][2] == 0:
-        print("\nFUCK, EMPTY FIRST LAYER. MUST HAVE AT LEAST ONE Z VALUE OF 0\n")
+        print("\nEMPTY FIRST LAYER. MUST HAVE AT LEAST ONE Z VALUE OF 0\n")
         return
 
 
