@@ -18,6 +18,7 @@ def pyblock_instuction_GUI(brick_data):
     total_bricks = len(brick_data)
 
     # get counts of each brick type
+    # where 
     brick_types_only = []
     for brick in brick_data:
         brick_types_only.append(brick[0])
@@ -27,20 +28,22 @@ def pyblock_instuction_GUI(brick_data):
 
     # Get the directory of the current script
     script_dir = path.dirname(path.abspath(__file__))
+    print(script_dir)
 
     # Construct the full paths to the image files
-    two_by_two_file_path = path.join(script_dir, '2x2.png')
-    two_by_three_file_path = path.join(script_dir, '2x3.png')
-    three_by_two_file_path = path.join(script_dir, '3x2.png')
-    two_by_four_file_path = path.join(script_dir, '2x4.png')
-    four_by_two_file_path = path.join(script_dir, '4x2.png')
-    two_by_two_normal_file_path = path.join(script_dir, '2x2normal.png')
-    two_by_three_normal_file_path = path.join(script_dir, '2x3normal.png')
-    three_by_two_normal_file_path = path.join(script_dir, '3x2normal.png')
-    two_by_four_normal_file_path = path.join(script_dir, '2x4normal.png')
-    four_by_two_normal_file_path =  path.join(script_dir, '4x2normal.png')
-    blank_file_path = path.join(script_dir, 'blank.png')
-    lego_logo_file_path = path.join(script_dir, 'PyBlockLogo.png')
+    two_by_two_file_path = path.join(script_dir + '/image_folder','2x2.png')
+    two_by_three_file_path = path.join(script_dir + '/image_folder','2x3.png')
+    three_by_two_file_path = path.join(script_dir + '/image_folder','3x2.png')
+    two_by_four_file_path = path.join(script_dir + '/image_folder','2x4.png')
+    four_by_two_file_path = path.join(script_dir + '/image_folder','4x2.png')
+    two_by_two_normal_file_path = path.join(script_dir + '/image_folder','2x2normal.png')
+    two_by_three_normal_file_path = path.join(script_dir + '/image_folder','2x3normal.png')
+    three_by_two_normal_file_path = path.join(script_dir + '/image_folder','3x2normal.png')
+    two_by_four_normal_file_path = path.join(script_dir + '/image_folder','2x4normal.png')
+    four_by_two_normal_file_path =  path.join(script_dir + '/image_folder','4x2normal.png')
+    blank_file_path = path.join(script_dir + '/image_folder','blank.png')
+    lego_logo_file_path = path.join(script_dir + '/image_folder','PyBlockLogo.png')
+    print(lego_logo_file_path)
 
     class MyMainWindow(QMainWindow):
         
