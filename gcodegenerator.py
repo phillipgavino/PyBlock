@@ -50,7 +50,7 @@ def gcode(filename, points):
     header = header + "M203 X500.00 Y500.00 Z50.00 E50.00 ;Setup machine max feedrate\n"
     header = header + "M204 P500.00 R1000.00 T500.00 ;Setup Print/Retract/Travel acceleration\n"
     header = header + "M205 X8.00 Y8.00 Z0.40 E5.00 ;Setup Jerk\n"
-    header = header + "M220 S500 ;Reset Feedrate\n"
+    header = header + "M220 S250 ;Reset Feedrate\n"
     header = header + "M221 S100 ;Reset Flowrate\n"
     header = header + "M302 S0 ;Disable cold extrusion safety\n"
     header = header + "G28 ;Home\n"
