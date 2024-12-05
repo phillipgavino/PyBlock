@@ -5,7 +5,7 @@ from PyBlockGUI import *
 
 if __name__ == "__main__":
     # Load STL file and extract voxel layer data
-    layer_data = stl_to_voxel_layer_data("stl/3DBenchy.stl")
+    layer_data = stl_to_voxel_layer_data("stl/Armchair.stl", 0.8)
 
     centers_layers = []
     info_lst = []
@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     print(info_flat)
     print(centers_flat)
-    # plt.show()
+    plt.show()
 
     # Generate G-code and GUI instructions
     gcode("gcode/3DBenchy_gcode_4.gcode", centers_flat)

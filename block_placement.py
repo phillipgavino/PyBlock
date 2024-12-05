@@ -4,6 +4,8 @@ from matplotlib.colors import ListedColormap
 import random
 import math
 
+random.seed(1)
+
 
 # Function to read the grid from a text file
 def read_grid_from_data(layer_data):
