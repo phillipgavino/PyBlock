@@ -47,7 +47,7 @@ def gcode(filename, points):
 
     header = "M82 ;absolute extrusion mode\n"
     header = header + "M201 X500.00 Y500.00 Z100.00 E5000.00 ;Setup machine max acceleration\n"
-    header = header + "M203 X500.00 Y500.00 Z100.00 E50.00 ;Setup machine max feedrate\n"
+    header = header + "M203 X500.00 Y500.00 Z50.00 E50.00 ;Setup machine max feedrate\n"
     header = header + "M204 P500.00 R1000.00 T500.00 ;Setup Print/Retract/Travel acceleration\n"
     header = header + "M205 X8.00 Y8.00 Z0.40 E5.00 ;Setup Jerk\n"
     header = header + "M220 S500 ;Reset Feedrate\n"
