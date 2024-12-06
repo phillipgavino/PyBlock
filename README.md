@@ -1,13 +1,9 @@
-<<<<<<< HEAD
-# Grid Optimization with Monte Carlo Tree Search (MCTS)
-=======
 # PyBlock: Optimized Block Building Robot
 
 ## Objective
 Develop a program that processes STL models and produces gcode for a modified 3D printer to construct the model using building blocks.
 
 Essentially, create a LEGO-styled slicer and printer!
->>>>>>> 24dea2b607f5b5832025eef6dcc1fb4561de44ca
 
 ## Requirements
 
