@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-PyBlock: Optimized Block Building Robot
-
-The goal of this project was to create a block placing robot with software that reads in STL files, voxelizes them, turns them into grids, then utilizes a Monte Carlo Tree Search algorithm to optimally place blocks on the assigned placement areas.
-
-=======
-# Grid Optimization with Monte Carlo Tree Search (MCTS)
-
 ## Overview
 This script provides a framework for solving grid-based block placement problems using **Monte Carlo Tree Search (MCTS)**. It includes functionality for grid visualization, simulation, and extraction of results, making it suitable for optimizing block placements in a 2D grid.
 
