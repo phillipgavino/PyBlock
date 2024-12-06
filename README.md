@@ -73,7 +73,13 @@ This script provides a framework for solving grid-based block placement problems
        [0, 0, 0, 0],
        [0, 0, 0, 0]
    ]
-   ```
+  ```
+
+2. Run MCTS:
+Use the find_best_combination function to optimize placements:
+```python
+Optimized_grid = find_best_combination_with_mcts(intitial_grid)
+```
 
 3. **Visualize Results”**
   Display the optimized grid:
@@ -81,11 +87,11 @@ This script provides a framework for solving grid-based block placement problems
   fig, ax = plt.subplots()
   draw_grid(optimized_grid, ax)
   plt.show()
-   ```
+  ```
 
 4. **Extract Block Metadata:**
   Analyze final block placements:
   ```python
   block_info = extract_final_block_info(optimized_grid) 
   print(block_info)
-   ```
+  ```
