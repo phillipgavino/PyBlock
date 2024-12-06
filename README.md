@@ -73,7 +73,7 @@ This script provides a framework for solving grid-based block placement problems
        [0, 0, 0, 0],
        [0, 0, 0, 0]
    ]
-  ```
+   ```
 
 3. **Visualize Results”**
   Display the optimized grid:
@@ -81,11 +81,11 @@ This script provides a framework for solving grid-based block placement problems
   fig, ax = plt.subplots()
   draw_grid(optimized_grid, ax)
   plt.show()
-  ```
+   ```
 
 4. **Extract Block Metadata:**
   Analyze final block placements:
   ```python
   block_info = extract_final_block_info(optimized_grid) 
   print(block_info)
-  ```
+   ```
