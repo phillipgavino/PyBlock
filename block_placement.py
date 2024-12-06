@@ -7,7 +7,7 @@ import math
 random.seed(1)
 
 
-# Function to read the grid from a text file
+
 def read_grid_from_data(layer_data):
     grids = []
     for data in layer_data:
@@ -91,11 +91,6 @@ class Node:
             ((2, 3), 8),  # Block size 2x3
             ((2, 2), 8)   # Block size 2x2
         ]
-
-        # prioritized_blocks = [
-        # ((2, 4), 8),  # Block size 2x4
-        # ((2, 2), 8)   # Block size 2x2
-        # ]
 
         valid_actions = []
 
@@ -193,11 +188,6 @@ def simulate(state):
         ((2, 3), 8),  # Block size 2x3
         ((2, 2), 8)   # Block size 2x2
     ]
-
-    # prioritized_blocks = [
-    #     ((2, 4), 8),  # Block size 2x4
-    #     ((2, 2), 8)   # Block size 2x2
-    # ]
 
     while True:
         legal_actions = []

@@ -29,9 +29,7 @@ if __name__ == "__main__":
     centers_flat = [center for layer in centers_layers for center in layer]
     info_flat = [info for layer in info_lst for info in layer]
 
-    print(info_flat)
-    print(centers_flat)
-    # plt.show()
+    plt.show()
 
     # Generate G-code and GUI instructions
     gcode("gcode/3DBenchy_gcode_4.gcode", centers_flat)
