@@ -76,10 +76,10 @@ This script provides a framework for solving grid-based block placement problems
   ```
 
 2. Run MCTS:
-Use the find_best_combination function to optimize placements:
-```python
-Optimized_grid = find_best_combination_with_mcts(intitial_grid)
-```
+   Use the find_best_combination function to optimize placements:
+   ```python
+      optimized_grid = find_best_combination_with_mcts(intitial_grid)
+   ```
 
 3. **Visualize Results”**
   Display the optimized grid:
